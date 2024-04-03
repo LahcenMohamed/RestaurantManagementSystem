@@ -16,7 +16,7 @@ namespace RestaurantManagementSystem.Models
         public string? Description { get; set; }
         [Range(10,1_000_000_000)]
         public decimal Price { get; set; }
-        public string? ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
         public List<Order> Orders { get; set; }
 
     }

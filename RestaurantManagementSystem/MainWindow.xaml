@@ -3,10 +3,120 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RestaurantManagementSystem"
+        xmlns:local="clr-namespace:RestaurantManagementSystem" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Activated="Window_Activated">
+        Title="MainWindow" Height="768" Width="1366" WindowState="Maximized" ResizeMode="NoResize" WindowStyle="None">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Canvas Grid.Column="1" >
 
+            <Button x:Name="btu_Exit" Width="40" Height="40" Style="{StaticResource MaterialDesignIconButton}" Canvas.Right="0" Foreground="Black" Click="btu_Exit_Click">
+                <materialDesign:PackIcon Kind="Close" Width="40" Height="40" />
+            </Button>
+
+            <Button x:Name="btu_min" Width="40" Height="40" Style="{StaticResource MaterialDesignIconButton}" Canvas.Right="50" Foreground="Black" Click="btu_min_Click" >
+                <materialDesign:PackIcon Kind="Minimize" Width="40" Height="40" />
+            </Button>
+        </Canvas>
+        <Border Grid.Column="0" Grid.Row="1" Background="Orange" >
+            <StackPanel>
+                <Button x:Name="CustomerBtn" Background="{x:Null}" BorderBrush="{x:Null}"  Foreground="{x:Null}" Height="60" Command="{Binding GetAllCommand}" Click="CustomerBtn_Click">
+                    <materialDesign:PackIcon Kind="People" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
+                </Button>
+
+                <Button x:Name="DishBtn" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="60" Command="{Binding GetAllCommand}" Click="DishBtn_Click">
+                    <materialDesign:PackIcon Kind="Food" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
+                </Button>
+
+                <Button Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="60">
+                    <materialDesign:PackIcon Kind="ListBox" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
+                </Button>
+            </StackPanel>
+        </Border>
+        <Canvas Grid.Column="0" Background="Orange">
+        </Canvas>
+
+        <Canvas Visibility="Hidden" x:Name="CustomerCanvas" Grid.Column="1" Grid.Row="1">
+            <Button Foreground="{x:Null}" Background=" #000080" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="20" Canvas.Top="15" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="100" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="AddCircle" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="Ajouter" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <Button Foreground="{x:Null}" Background="#808000" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="160" Canvas.Top="15" Command="{Binding UpdateCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="100" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="Edit" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="modifier" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <Button Foreground="{x:Null}" Background=" #A52A2A" BorderBrush="{x:Null}" Width="140" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="300" Canvas.Top="15" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="120" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="Delete" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="supprimer" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <TextBox Style="{StaticResource MaterialDesignTextBox}" Width="250" Height="40" Canvas.Right="20" Canvas.Top="10"
+                   Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="rechercher" FontSize="22"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+            <DataGrid x:Name="CustomerGrid"  Height="674" Canvas.Top="60" Width="1266" IsReadOnly="True"   HorizontalAlignment="Center" VerticalAlignment="Top" ColumnWidth="*"  AutoGenerateColumns="False"  Canvas.Left="20" ItemsSource="{Binding Customers}" SelectedItem="{Binding SelectedCustomer}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Nom complet" Binding="{Binding FullName}"/>
+                    <DataGridTextColumn Header="téléphone" Binding="{Binding PhoneNumber}"/>
+                    <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
+                    <DataGridCheckBoxColumn Header="Loyal" Binding="{Binding IsLoyal}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Canvas>
+        
+        <Canvas Visibility="Hidden" x:Name="DishCanvas" Grid.Column="1" Grid.Row="1">
+            <Button Foreground="{x:Null}" Background=" #000080" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="20" Canvas.Top="15" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="100" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="AddCircle" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="Ajouter" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <Button Foreground="{x:Null}" Background="#808000" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="160" Canvas.Top="15" Command="{Binding UpdateCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="100" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="Edit" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="modifier" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <Button Foreground="{x:Null}" Background=" #A52A2A" BorderBrush="{x:Null}" Width="140" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="300" Canvas.Top="15" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="120" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="Delete" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="supprimer" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <TextBox Style="{StaticResource MaterialDesignTextBox}" Width="250" Height="40" Canvas.Right="20" Canvas.Top="10"
+           Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="rechercher" FontSize="22"
+           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+            <DataGrid x:Name="DishGrid"  Height="674" Canvas.Top="60" Width="1266" IsReadOnly="True"   HorizontalAlignment="Center" VerticalAlignment="Top" ColumnWidth="*"  AutoGenerateColumns="False"  Canvas.Left="20" ItemsSource="{Binding Dishs}" SelectedItem="{Binding SelectedDish}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="nom de plat" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Prix" Binding="{Binding Price}"/>
+                    <DataGridTemplateColumn Header="Image">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageUrl}" Width="100" Height="50" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Canvas>
     </Grid>
 </Window>

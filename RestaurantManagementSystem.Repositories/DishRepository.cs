@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
 using System;
@@ -20,10 +21,11 @@ namespace RestaurantManagementSystem.Repositories
 
         public async Task CreateAsync(Dish model)
         {
-            string query = $"INSERT INTO Dishes (Name, Description, Price) " +
+            string query = $"INSERT INTO Dishes (Name, Description, Price,ImageUrl) " +
                            $"VALUES ('{model.Name.Replace("'", "''")}', " +
                            $"'{model.Description?.Replace("'", "''")}', " +
-                           $"{model.Price})";
+                           $"{model.Price}, " +
+                           $"'{model.ImageUrl}')";
 
             _context.Database.ExecuteSqlRaw(query);
             await _context.SaveChangesAsync();
@@ -38,22 +40,24 @@ namespace RestaurantManagementSystem.Repositories
 
         public IAsyncEnumerable<Dish> GetAllAsync()
         {
-            return _context.Database.SqlQuery<Dish>($"Select *from Dishs").AsAsyncEnumerable();
+            return _context.Dishes.FromSqlRaw($"Select *from Dishes").AsAsyncEnumerable();
         }
 
         public async Task<Dish> GetByIdAsync(int id)
         {
-            return await _context.Database.SqlQuery<Dish>($"Select *from Dishs where Id = {id}").FirstOrDefaultAsync();
+            return await _context.Dishes.FromSqlRaw($"Select *from Dishes where Id = {id}").FirstOrDefaultAsync();
         }
 
         public async Task<Dish> GetByNameAsync(string Name)
         {
-            return await _context.Database.SqlQuery<Dish>($"Select *from Dishs where Name = '{Name}'").FirstOrDefaultAsync();
+            return await _context.Dishes.FromSqlRaw($"Select *from Dishes where Name = '{Name}'").FirstOrDefaultAsync();
         }
 
         public IAsyncEnumerable<Dish> Search(string item)
         {
-            return _context.Database.SqlQuery<Dish>($"Select *from Dishs where Id = {item} or Name like '%{item}%' or price = {item}").AsAsyncEnumerable();
+            decimal price = 0;
+            decimal.TryParse(item,out price);
+            return _context.Dishes.FromSqlRaw($"Select *from Dishes where Name like '%{item}%' or price = {price}").AsAsyncEnumerable();
         }
 
         public async Task UpdateAsync(Dish model)

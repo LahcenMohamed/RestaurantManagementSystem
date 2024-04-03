@@ -38,24 +38,25 @@ namespace RestaurantManagementSystem.Repositories
 
         public IAsyncEnumerable<Customer> GetAllAsync()
         {
-            return _context.Database.SqlQuery<Customer>($"select *from Customers").AsAsyncEnumerable();
+            var sql = "SELECT * FROM Customers";
+            return _context.Customers.FromSqlRaw(sql).AsAsyncEnumerable();
         }
 
         public async Task<Customer> GetByIdAsync(int id)
         {
-            return await _context.Database.SqlQuery<Customer>($"Select *from Customers where Id = {id}").FirstOrDefaultAsync();
+            return await _context.Customers.FromSqlRaw($"Select *from Customers where Id = {id}").FirstOrDefaultAsync();
         }
 
         public async Task<Customer> GetByNameAsync(string FullName)
         {
-            return await _context.Database.SqlQuery<Customer>($"Select *from Customers where FullName = {FullName.Replace("'", "''")}")
+            return await _context.Customers.FromSqlRaw($"Select *from Customers where FullName = {FullName.Replace("'", "''")}")
                                                             .FirstOrDefaultAsync();
         }
 
         public IAsyncEnumerable<Customer> Search(string item)
         {
-            return _context.Database
-                  .SqlQuery<Customer>($"select *from Customers where FullName like '%{item.Replace("'", "''")}%' or PhoneNumber like '%{item.Replace("'", "''")}%'")
+            return _context.Customers
+                  .FromSqlRaw($"select *from Customers where FullName like '%{item.Replace("'", "''")}%' or PhoneNumber like '%{item.Replace("'", "''")}%' or Address like '%{item.Replace("'", "''")}%'")
                   .AsAsyncEnumerable();
         }
 
