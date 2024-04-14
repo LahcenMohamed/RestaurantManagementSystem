@@ -10,6 +10,7 @@ namespace RestaurantManagementSystem.Repositories.IReposioriesHelpers
     public interface IDishRepository : IBaseRepository<Dish>
     {
         public Task<Dish> GetByNameAsync(string Name);
+        public int CountOfCommon();
 
     }
 }

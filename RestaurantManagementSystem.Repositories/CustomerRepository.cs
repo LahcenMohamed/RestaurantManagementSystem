@@ -16,6 +16,17 @@ namespace RestaurantManagementSystem.Repositories
         {
             _context = new RestaurantManagementSystemDbContext();
         }
+
+        public int Count()
+        {
+            return _context.Customers.Count();
+        }
+
+        public int CountOfLoyal()
+        {
+            return _context.Customers.Count(x => x.IsLoyal);
+        }
+
         public async Task CreateAsync(Customer model)
         {
             string query = $"INSERT INTO Customers (FullName, PhoneNumber, Address, IsLoyal) " +
@@ -49,7 +60,7 @@ namespace RestaurantManagementSystem.Repositories
 
         public async Task<Customer> GetByNameAsync(string FullName)
         {
-            return await _context.Customers.FromSqlRaw($"Select *from Customers where FullName = {FullName.Replace("'", "''")}")
+            return await _context.Customers.FromSqlRaw($"Select *from Customers where FullName = '{FullName.Replace("'", "''")}'")
                                                             .FirstOrDefaultAsync();
         }
 

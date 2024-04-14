@@ -11,5 +11,6 @@ namespace RestaurantManagementSystem.Repositories.IReposioriesHelpers
     {
         public IAsyncEnumerable<Order> GetByCustomerIdAsync(int customerId);
         public IAsyncEnumerable<Order> GetByDishIdAsync(int DishId);
+        public int CountOfDay();
     }
 }

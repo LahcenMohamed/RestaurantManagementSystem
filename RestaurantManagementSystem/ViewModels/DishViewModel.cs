@@ -15,10 +15,11 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.IdentityModel.Tokens;
 using System.Windows.Media;
 using Microsoft.Win32;
+using System.Collections.Specialized;
 
 namespace RestaurantManagementSystem.ViewModels
 {
-    public sealed class DishViewModel
+    public sealed class DishViewModel : INotifyCollectionChanged
     {
         private readonly IDishRepository _dishRepository;
         private string searchItem;
@@ -181,6 +182,8 @@ namespace RestaurantManagementSystem.ViewModels
             }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
+
         private void onPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

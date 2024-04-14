@@ -14,6 +14,7 @@ namespace RestaurantManagementSystem.Repositories.IReposioriesHelpers
         public IAsyncEnumerable<Model> GetAllAsync();
         public Task<Model> GetByIdAsync(int id);
         public IAsyncEnumerable<Model> Search(string item);
+        public int Count();
 
     }
 }

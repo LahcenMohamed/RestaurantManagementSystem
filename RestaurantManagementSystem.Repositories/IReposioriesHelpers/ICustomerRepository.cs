@@ -10,5 +10,6 @@ namespace RestaurantManagementSystem.Repositories.IReposioriesHelpers
     public interface ICustomerRepository : IBaseRepository<Customer>
     {
         public Task<Customer> GetByNameAsync(string FullName);
+        public int CountOfLoyal();
     }
 }

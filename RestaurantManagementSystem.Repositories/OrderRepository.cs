@@ -20,8 +20,9 @@ namespace RestaurantManagementSystem.Repositories
 
         public async Task CreateAsync(Order model)
         {
-            string query = $"INSERT INTO Orders (OrderDateTime, DishId, CustomerId) " +
+            string query = $"INSERT INTO Orders (OrderDateTime,Price, DishId, CustomerId) " +
                            $"VALUES ('{model.OrderDateTime}', " +
+                           $"{model.Price} ," +
                            $"{model.DishId}, " +
                            $"{model.CustomerId})";
 
@@ -38,7 +39,21 @@ namespace RestaurantManagementSystem.Repositories
 
         public IAsyncEnumerable<Order> GetAllAsync()
         {
-            return _context.Database.SqlQuery<Order>($"SELECT * FROM Orders").AsAsyncEnumerable();
+            var sql = @"
+                        SELECT
+                            o.Id, o.CustomerId, o.DishId, o.OrderDateTime, o.Price,
+                            c.FullName,
+                            d.Name
+                        FROM Orders o
+                        JOIN Customers c ON o.CustomerId = c.Id
+                        JOIN Dishes d ON o.DishId = d.Id
+                        ";
+
+            return _context.Orders
+                .FromSqlRaw(sql)
+                .Include(o => o.Customer)
+                .Include(o => o.Dish)
+                .AsAsyncEnumerable();
         }
 
         public async Task<Order> GetByIdAsync(int id)
@@ -78,6 +93,14 @@ namespace RestaurantManagementSystem.Repositories
             throw new NotImplementedException();
         }
 
-        
+        public int Count()
+        {
+            return _context.Orders.Count();
+        }
+
+        public int CountOfDay()
+        {
+            return _context.Orders.Count(x => x.OrderDateTime.Day == DateTime.Now.Day);
+        }
     }
 }

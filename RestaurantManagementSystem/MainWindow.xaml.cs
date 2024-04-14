@@ -21,13 +21,19 @@ namespace RestaurantManagementSystem
     {
         private readonly CustomerViewModel customerViewModel;
         private readonly DishViewModel dishViewModel;
+        private readonly OrderViewModel orderViewModel;
+        private readonly DashboardViewModel dashboardViewModel;
         public MainWindow()
         {           
             InitializeComponent();
             customerViewModel = new CustomerViewModel();
             dishViewModel = new DishViewModel();
+            dashboardViewModel = new();
+            orderViewModel = new();
             CustomerBtn.DataContext = CustomerCanvas.DataContext = customerViewModel;
             DishCanvas.DataContext = DishBtn.DataContext = dishViewModel;
+            OrderBtn.DataContext = OrderCanvas.DataContext = orderViewModel;
+            DashboardBtn.DataContext = DashboardCanvas.DataContext = dashboardViewModel;
         }
 
         private void btu_Exit_Click(object sender, RoutedEventArgs e)
@@ -43,12 +49,38 @@ namespace RestaurantManagementSystem
         {
             CustomerCanvas.Visibility = Visibility.Visible;
             DishCanvas.Visibility = Visibility.Hidden;
+            OrderCanvas.Visibility = Visibility.Hidden;
+            DashboardCanvas.Visibility = Visibility.Hidden;
+
+
         }
 
         private void DishBtn_Click(object sender, RoutedEventArgs e)
         {
             CustomerCanvas.Visibility = Visibility.Hidden;
             DishCanvas.Visibility = Visibility.Visible;
+            OrderCanvas.Visibility = Visibility.Hidden;
+            DashboardCanvas.Visibility = Visibility.Hidden;
+
+
+        }
+
+        private void OrderBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerCanvas.Visibility = Visibility.Hidden;
+            DishCanvas.Visibility = Visibility.Hidden;
+            OrderCanvas.Visibility = Visibility.Visible;
+            DashboardCanvas.Visibility = Visibility.Hidden;
+
+        }
+
+        private void DashboardBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerCanvas.Visibility = Visibility.Hidden;
+            DishCanvas.Visibility = Visibility.Hidden;
+            OrderCanvas.Visibility = Visibility.Hidden;
+            DashboardCanvas.Visibility = Visibility.Visible;
+
         }
     }
 }

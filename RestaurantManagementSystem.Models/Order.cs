@@ -11,6 +11,7 @@ namespace RestaurantManagementSystem.Models
     {
         public int Id { get; set; }
         public DateTime OrderDateTime { get; set; }
+        public decimal Price { get; set; }
         [ForeignKey("Dish")]
         public int DishId { get; set; }
         public Dish Dish { get; set; }

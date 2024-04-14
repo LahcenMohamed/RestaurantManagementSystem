@@ -19,6 +19,16 @@ namespace RestaurantManagementSystem.Repositories
             _context = new RestaurantManagementSystemDbContext();
         }
 
+        public int Count()
+        {
+            return _context.Dishes.Count();
+        }
+
+        public int CountOfCommon()
+        {
+            return _context.Dishes.Count(x => x.isCommon);
+        }
+
         public async Task CreateAsync(Dish model)
         {
             string query = $"INSERT INTO Dishes (Name, Description, Price,ImageUrl) " +

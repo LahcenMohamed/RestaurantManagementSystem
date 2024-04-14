@@ -27,6 +27,9 @@
         </Canvas>
         <Border Grid.Column="0" Grid.Row="1" Background="Orange" >
             <StackPanel>
+                <Button x:Name="DashboardBtn" Background="{x:Null}" BorderBrush="{x:Null}"  Foreground="{x:Null}" Height="60" Command="{Binding GetAllCommand}" Click="DashboardBtn_Click">
+                    <materialDesign:PackIcon Kind="TabletDashboard" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
+                </Button>
                 <Button x:Name="CustomerBtn" Background="{x:Null}" BorderBrush="{x:Null}"  Foreground="{x:Null}" Height="60" Command="{Binding GetAllCommand}" Click="CustomerBtn_Click">
                     <materialDesign:PackIcon Kind="People" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
                 </Button>
@@ -35,7 +38,7 @@
                     <materialDesign:PackIcon Kind="Food" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
                 </Button>
 
-                <Button Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="60">
+                <Button x:Name="OrderBtn" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="60" Command="{Binding GetAllCommand}" Click="OrderBtn_Click">
                     <materialDesign:PackIcon Kind="ListBox" Foreground="White" Width="50" Height="50" Margin="-5,0,0,0"/>
                 </Button>
             </StackPanel>
@@ -118,5 +121,115 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Canvas>
+        
+        <Canvas Visibility="Hidden" x:Name="OrderCanvas" Grid.Column="1" Grid.Row="1">
+            <Button Foreground="{x:Null}" Background=" #000080" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="20" Canvas.Top="15" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="100" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="AddCircle" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="Ajouter" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <Button Foreground="{x:Null}" Background="#808000" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="160" Canvas.Top="15" Command="{Binding UpdateCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="100" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="Edit" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="modifier" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <Button Foreground="{x:Null}" Background=" #A52A2A" BorderBrush="{x:Null}" Width="140" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="300" Canvas.Top="15" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <WrapPanel Width="120" Height="20" Margin="-15" >
+                    <materialDesign:PackIcon FontSize="5" Kind="Delete" Foreground="White" Height="20" Width="30" />
+                    <TextBlock Text="supprimer" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
+                </WrapPanel>
+            </Button>
+            <TextBox Style="{StaticResource MaterialDesignTextBox}" Width="250" Height="40" Canvas.Right="20" Canvas.Top="10"
+           Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="rechercher" FontSize="22"
+           HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+
+            <DataGrid x:Name="OrderGrid"  Height="674" Canvas.Top="60" Width="1266" IsReadOnly="True"   HorizontalAlignment="Center" VerticalAlignment="Top" ColumnWidth="*"  AutoGenerateColumns="False"  Canvas.Left="20" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Date et heure" Binding="{Binding OrderDateTime}"/>
+                    <DataGridTextColumn Header="Nom de client" Binding="{Binding Customer.FullName}"/>
+                    <DataGridTextColumn Header="Nom de plat" Binding="{Binding Dish.Name}"/>
+                    <DataGridTextColumn Header="Prix" Binding="{Binding Price}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Canvas>
+
+        <Canvas Visibility="Visible" x:Name="DashboardCanvas" Grid.Column="1" Grid.Row="1">
+            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                   BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="People" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfCustomers,Mode=TwoWay}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Clients" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+
+            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="150">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="People" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfLoyalCustomers,Mode=TwoWay}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Loyal Clients" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+
+            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="300">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                     BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="Food" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfDishs}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Dishs" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+
+            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="450">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="Food" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfCommonDishs}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Common Dishs" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+
+            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="600">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="ListBox" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfOrders}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Orders" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+
+            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="750">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="ListBox" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfDayOrders}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Day Orders" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+        </Canvas>
+
     </Grid>
 </Window>

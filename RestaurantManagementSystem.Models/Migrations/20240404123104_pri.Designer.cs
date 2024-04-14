@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantManagementSystem.Models;
 
@@ -11,9 +12,11 @@ using RestaurantManagementSystem.Models;
 namespace RestaurantManagementSystem.Models.Migrations
 {
     [DbContext(typeof(RestaurantManagementSystemDbContext))]
-    partial class RestaurantManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240404123104_pri")]
+    partial class pri
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,9 +73,6 @@ namespace RestaurantManagementSystem.Models.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("isCommon")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
