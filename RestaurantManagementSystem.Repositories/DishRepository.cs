@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantManagementSystem.Repositories
 {
@@ -66,7 +60,7 @@ namespace RestaurantManagementSystem.Repositories
         public IAsyncEnumerable<Dish> Search(string item)
         {
             decimal price = 0;
-            decimal.TryParse(item,out price);
+            decimal.TryParse(item, out price);
             return _context.Dishes.FromSqlRaw($"Select *from Dishes where Name like '%{item}%' or price = {price}").AsAsyncEnumerable();
         }
 

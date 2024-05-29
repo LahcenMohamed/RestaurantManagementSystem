@@ -18,7 +18,7 @@
         <Canvas>
             <DatePicker Width="200" Height="51" Canvas.Left="20" Canvas.Top="20"
                 FontSize="14" materialDesign:HintAssist.FontFamily="Comic Sans MS" materialDesign:HintAssist.Hint="Date et heure" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"  
-                 BorderBrush="{DynamicResource MaterialDesignDivider}"   DisplayDate="{Binding Order.OrderDateTime, StringFormat={}{0:dd/MM/yyyy}}" Text="{Binding Order.OrderDateTime, StringFormat={}{0:dd/MM/yyyy}}" 
+                 BorderBrush="{DynamicResource MaterialDesignDivider}"   DisplayDate="{Binding Order.OrderDateTime,StringFormat={}{0:dd/MM/yyyy}}" Text="{Binding Order.OrderDateTime, StringFormat={}{0:dd/MM/yyyy}}" 
                 />
             <TextBox Width="200" Height="51" Canvas.Left="20" Canvas.Top="90"
              FontSize="14" materialDesign:HintAssist.FontFamily="Comic Sans MS" materialDesign:HintAssist.Hint="Prix" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"  

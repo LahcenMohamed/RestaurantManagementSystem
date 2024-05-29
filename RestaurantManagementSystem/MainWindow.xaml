@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RestaurantManagementSystem" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:RestaurantManagementSystem" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="768" Width="1366" WindowState="Maximized" ResizeMode="NoResize" WindowStyle="None">
     <Grid>
@@ -80,7 +80,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Canvas>
-        
+
         <Canvas Visibility="Hidden" x:Name="DishCanvas" Grid.Column="1" Grid.Row="1">
             <Button Foreground="{x:Null}" Background=" #000080" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="20" Canvas.Top="15" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <WrapPanel Width="100" Height="20" Margin="-15" >
@@ -121,7 +121,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Canvas>
-        
+
         <Canvas Visibility="Hidden" x:Name="OrderCanvas" Grid.Column="1" Grid.Row="1">
             <Button Foreground="{x:Null}" Background=" #000080" BorderBrush="{x:Null}" Width="120" materialDesign:ButtonAssist.CornerRadius="12.5" Canvas.Left="20" Canvas.Top="15" Command="{Binding AddCommand}" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <WrapPanel Width="100" Height="20" Margin="-15" >
@@ -141,7 +141,7 @@
                     <TextBlock Text="supprimer" Foreground="White" FontFamily="Comic Sans MS" Margin="0,-2,0,0" FontSize="16" />
                 </WrapPanel>
             </Button>
-            <TextBox Style="{StaticResource MaterialDesignTextBox}" Width="250" Height="40" Canvas.Right="20" Canvas.Top="10"
+            <TextBox Visibility="Hidden" Style="{StaticResource MaterialDesignTextBox}" Width="250" Height="40" Canvas.Right="20" Canvas.Top="10"
            Text="{Binding SearchItem, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="rechercher" FontSize="22"
            HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
@@ -149,7 +149,7 @@
             <DataGrid x:Name="OrderGrid"  Height="674" Canvas.Top="60" Width="1266" IsReadOnly="True"   HorizontalAlignment="Center" VerticalAlignment="Top" ColumnWidth="*"  AutoGenerateColumns="False"  Canvas.Left="20" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="Date et heure" Binding="{Binding OrderDateTime}"/>
+                    <DataGridTextColumn Header="Date et heure" Binding="{Binding OrderDateTime,StringFormat={}{0:dd/MM/yyyy}}"/>
                     <DataGridTextColumn Header="Nom de client" Binding="{Binding Customer.FullName}"/>
                     <DataGridTextColumn Header="Nom de plat" Binding="{Binding Dish.Name}"/>
                     <DataGridTextColumn Header="Prix" Binding="{Binding Price}"/>
@@ -157,7 +157,7 @@
             </DataGrid>
         </Canvas>
 
-        <Canvas Visibility="Visible" x:Name="DashboardCanvas" Grid.Column="1" Grid.Row="1">
+        <Canvas Visibility="Hidden" x:Name="DashboardCanvas" Grid.Column="1" Grid.Row="1">
             <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
                 <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
@@ -176,7 +176,7 @@
                     <StackPanel Margin="10">
                         <materialDesign:PackIcon Width="30" Height="30" Kind="People" Foreground="Orange" />
                         <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfLoyalCustomers,Mode=TwoWay}" Margin="0 10 0 0" />
-                        <TextBlock FontSize="12" Text="Loyal Clients" />
+                        <TextBlock FontSize="12" Text="Clients fidèles" />
                         <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
                     </StackPanel>
                 </materialDesign:Card>
@@ -188,7 +188,19 @@
                     <StackPanel Margin="10">
                         <materialDesign:PackIcon Width="30" Height="30" Kind="Food" Foreground="Orange" />
                         <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfDishs}" Margin="0 10 0 0" />
-                        <TextBlock FontSize="12" Text="Dishs" />
+                        <TextBlock FontSize="12" Text="Plats" />
+                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </Border>
+
+            <Border Visibility="Hidden" BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="450">
+                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
+                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
+                    <StackPanel Margin="10">
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="Food" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfCommonDishs}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Plats courants" />
                         <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
                     </StackPanel>
                 </materialDesign:Card>
@@ -198,9 +210,9 @@
                 <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
                     BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
                     <StackPanel Margin="10">
-                        <materialDesign:PackIcon Width="30" Height="30" Kind="Food" Foreground="Orange" />
-                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfCommonDishs}" Margin="0 10 0 0" />
-                        <TextBlock FontSize="12" Text="Common Dishs" />
+                        <materialDesign:PackIcon Width="30" Height="30" Kind="ListBox" Foreground="Orange" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfOrders}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Ordres" />
                         <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
                     </StackPanel>
                 </materialDesign:Card>
@@ -211,24 +223,27 @@
                     BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
                     <StackPanel Margin="10">
                         <materialDesign:PackIcon Width="30" Height="30" Kind="ListBox" Foreground="Orange" />
-                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfOrders}" Margin="0 10 0 0" />
-                        <TextBlock FontSize="12" Text="Orders" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfDayOrders}" Margin="0 10 0 0" />
+                        <TextBlock FontSize="12" Text="Commandes d’aujourd’hui" />
                         <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
                     </StackPanel>
                 </materialDesign:Card>
             </Border>
 
-            <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15" Canvas.Left="750">
-                <materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth0" UniformCornerRadius="15" BorderThickness="5"
-                    BorderBrush="White" Width="110" Height="130" Background="#F6F6F8">
-                    <StackPanel Margin="10">
-                        <materialDesign:PackIcon Width="30" Height="30" Kind="ListBox" Foreground="Orange" />
-                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfDayOrders}" Margin="0 10 0 0" />
-                        <TextBlock FontSize="12" Text="Day Orders" />
-                        <materialDesign:PackIcon Kind="EllipsisHorizontal" HorizontalAlignment="Right" />
-                    </StackPanel>
-                </materialDesign:Card>
-            </Border>
+            <lvc:PieChart LegendLocation="Bottom" Height="250" Width="300" Canvas.Left="20" Canvas.Top="174" Hoverable="False" DataTooltip="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="{Binding DishsNames[0]}" Values="{Binding DishsValues[0]}" DataLabels="True"
+                              />
+                    <lvc:PieSeries Title="{Binding DishsNames[1]}" Values="{Binding DishsValues[1]}" DataLabels="True" 
+                               />
+                    <lvc:PieSeries Title="{Binding DishsNames[2]}" Values="{Binding DishsValues[2]}" DataLabels="True" 
+                               />
+                    <lvc:PieSeries Title="{Binding DishsNames[3]}" Values="{Binding DishsValues[3]}" DataLabels="True" 
+                               />
+                    <lvc:PieSeries Title="{Binding DishsNames[4]}" Values="{Binding DishsValues[4]}" DataLabels="True" 
+                               />
+                </lvc:PieChart.Series>
+            </lvc:PieChart>
         </Canvas>
 
     </Grid>

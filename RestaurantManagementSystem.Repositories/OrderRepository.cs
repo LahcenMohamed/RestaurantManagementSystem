@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantManagementSystem.Repositories
 {
@@ -21,7 +16,7 @@ namespace RestaurantManagementSystem.Repositories
         public async Task CreateAsync(Order model)
         {
             string query = $"INSERT INTO Orders (OrderDateTime,Price, DishId, CustomerId) " +
-                           $"VALUES ('{model.OrderDateTime}', " +
+                           $"VALUES ('{model.OrderDateTime.Year}-{model.OrderDateTime.Month}-{model.OrderDateTime.Day}', " +
                            $"{model.Price} ," +
                            $"{model.DishId}, " +
                            $"{model.CustomerId})";
@@ -101,6 +96,11 @@ namespace RestaurantManagementSystem.Repositories
         public int CountOfDay()
         {
             return _context.Orders.Count(x => x.OrderDateTime.Day == DateTime.Now.Day);
+        }
+
+        public async Task<Dictionary<string, int>> MaxDishes()
+        {
+            return _context.Orders.Include(d => d.Dish).AsEnumerable().GroupBy(x => x.Dish.Name).Select(x => new KeyValuePair<string, int>(x.Key, x.Count())).OrderByDescending(x => x.Value).Take(5).ToDictionary();
         }
     }
 }

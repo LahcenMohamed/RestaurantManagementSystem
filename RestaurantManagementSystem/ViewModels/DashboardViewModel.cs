@@ -1,13 +1,10 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
-using RestaurantManagementSystem.Models;
+using LiveCharts;
+using LiveCharts.Defaults;
 using RestaurantManagementSystem.Repositories;
 using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace RestaurantManagementSystem.ViewModels
@@ -25,6 +22,7 @@ namespace RestaurantManagementSystem.ViewModels
         private int countOfCommonDishs;
         private int countOfDayOrders;
 
+        public ObservableCollection<string> DishsNames { get; set; }
         public int CountOfCustomers
         {
             get
@@ -103,7 +101,7 @@ namespace RestaurantManagementSystem.ViewModels
             }
         }
 
-
+        public ObservableCollection<ChartValues<ObservableValue>> DishsValues { get; set; }
 
         public ICommand GetAllCommand { get; }
 
@@ -112,6 +110,8 @@ namespace RestaurantManagementSystem.ViewModels
             _customerRepository = new CustomerRepository();
             _orderRepository = new OrderRepository();
             _dishRepository = new DishRepository();
+            DishsNames = new ObservableCollection<string>();
+            DishsValues = new ObservableCollection<ChartValues<ObservableValue>>();
             GetAllCommand = new RelayCommand(GetAll);
         }
 
@@ -123,6 +123,22 @@ namespace RestaurantManagementSystem.ViewModels
             CountOfCommonDishs = _dishRepository.CountOfCommon();
             CountOfDayOrders = _orderRepository.CountOfDay();
             CountOfLoyalCustomers = _customerRepository.CountOfLoyal();
+            DishsNames.Clear();
+            var dishes = await _orderRepository.MaxDishes();
+            for (int i = 0; i < 5; i++)
+            {
+                if (i < dishes.Count)
+                {
+                    DishsValues.Add(new ChartValues<ObservableValue>() { new ObservableValue(dishes.ElementAt(i).Value) });
+                    DishsNames.Add(dishes.ElementAt(i).Key);
+                }
+                else
+                {
+                    DishsValues.Add(new ChartValues<ObservableValue>() { new ObservableValue(0) });
+                    DishsNames.Add(null);
+                }
+            }
+
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

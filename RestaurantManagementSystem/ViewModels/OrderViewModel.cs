@@ -1,18 +1,13 @@
-﻿using RestaurantManagementSystem.Models;
-using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.IdentityModel.Tokens;
+using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repositories;
+using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
 using RestaurantManagementSystem.Views;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
-using GalaSoft.MvvmLight.CommandWpf;
-using Microsoft.IdentityModel.Tokens;
+using System.Windows.Input;
 
 namespace RestaurantManagementSystem.ViewModels
 {
@@ -128,7 +123,9 @@ namespace RestaurantManagementSystem.ViewModels
             {
                 var cust = await _customerRepository.GetByNameAsync(customerName);
                 if (cust.IsLoyal)
+                {
                     Price *= 0.90m;
+                }
             }
         }
         private async void ChangeDishName()
@@ -137,6 +134,15 @@ namespace RestaurantManagementSystem.ViewModels
             {
                 var dish = await _dishRepository.GetByNameAsync(dishName);
                 Price = dish.Price;
+                if (!customerName.IsNullOrEmpty())
+                {
+                    var cust = await _customerRepository.GetByNameAsync(customerName);
+                    if (cust.IsLoyal)
+                    {
+                        Price *= 0.90m;
+                    }
+                }
+
             }
         }
         private async void SearchAsync()

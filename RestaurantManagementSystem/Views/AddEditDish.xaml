@@ -29,7 +29,7 @@
               BorderBrush="{DynamicResource MaterialDesignDivider}"  Style="{StaticResource MaterialDesignOutlinedTextBox}" Text="{Binding Dish.Price}"  
                 />
             <!--SelectedItem="{Binding CategoryNames[0]}"-->
-            <Image Width="200" Height="150" Canvas.Left="240" Canvas.Top="20" Source="{Binding ImageSource, UpdateSourceTrigger=PropertyChanged}"/>
+            <Image Width="200" Height="150" Canvas.Left="240" Canvas.Top="20" Source="{Binding ImageSource}"/>
 
             <Button  Foreground="{x:Null}" BorderBrush="{x:Null}" Width="120" Background="#800080" Canvas.Left="280" Canvas.Top="219" Command="{Binding SaveCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" >
                 <WrapPanel Width="200" Height="20" Margin="-15" >

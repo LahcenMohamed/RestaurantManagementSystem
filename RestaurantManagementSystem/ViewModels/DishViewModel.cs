@@ -1,25 +1,19 @@
-﻿using RestaurantManagementSystem.Models;
-using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
-using RestaurantManagementSystem.Repositories;
-using RestaurantManagementSystem.Views;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows;
-using GalaSoft.MvvmLight.CommandWpf;
+﻿using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.IdentityModel.Tokens;
-using System.Windows.Media;
 using Microsoft.Win32;
+using RestaurantManagementSystem.Models;
+using RestaurantManagementSystem.Repositories;
+using RestaurantManagementSystem.Repositories.IReposioriesHelpers;
+using RestaurantManagementSystem.Views;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace RestaurantManagementSystem.ViewModels
 {
-    public sealed class DishViewModel : INotifyCollectionChanged
+    public sealed class DishViewModel : INotifyPropertyChanged
     {
         private readonly IDishRepository _dishRepository;
         private string searchItem;
@@ -27,7 +21,8 @@ namespace RestaurantManagementSystem.ViewModels
         private string _imageSource;
         public string ImageSource
         {
-            get { return _imageSource; }
+            get
+            { return _imageSource; }
             set
             {
                 _imageSource = value;
@@ -56,13 +51,9 @@ namespace RestaurantManagementSystem.ViewModels
         }
 
         public ICommand AddCommand { get; }
-
         public ICommand UpdateCommand { get; }
-
         public ICommand DeleteCommand { get; }
-
         public ICommand SaveCommand { get; }
-
         public ICommand GetAllCommand { get; }
         public ICommand SelectImageCommand { get; }
         public DishViewModel()
@@ -85,7 +76,7 @@ namespace RestaurantManagementSystem.ViewModels
             openFileDialog.Filter = "Image Files (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp";
             if (openFileDialog.ShowDialog() == true)
             {
-                Dish.ImageUrl = ImageSource = openFileDialog.FileName ;
+                Dish.ImageUrl = ImageSource = openFileDialog.FileName;
             }
         }
 
@@ -141,6 +132,7 @@ namespace RestaurantManagementSystem.ViewModels
                 {
                     await _dishRepository.CreateAsync(Dish);
                     Dish = new Dish();
+                    ImageSource = string.Empty;
                     MessageBox.Show("L’ajout de plat a été couronné de succès");
 
                 }
@@ -148,6 +140,7 @@ namespace RestaurantManagementSystem.ViewModels
                 {
                     await _dishRepository.UpdateAsync(Dish);
                     Dish = new Dish();
+                    ImageSource = string.Empty;
                     MessageBox.Show("L’modifié de plat a été couronné de succès");
                 }
                 addEditDish.Close();
